@@ -104,11 +104,11 @@ public static Connection getConection(){
         try {
             con = getConection();
             
-            ps = con.prepareStatement("delete from empleados where clave = ?");
-            ps.setString(1, txtBuscarID.getText());
+            ps = con.prepareStatement("delete from empleados where id = ?");
+            ps.setInt(1, Integer.parseInt(txtBuscarID.getText()));
             int res = ps.executeUpdate();
             if (res > 0) {
-              JOptionPane.showMessageDialog(null, "Se elimino el empleado con clave: "+txtBuscarID.getText() + " de forma exitosa!"); 
+              JOptionPane.showMessageDialog(null, "Se elimino el hopsital con clave: "+txtBuscarID.getText() + " de forma exitosa!"); 
               limpiarCaja();
             }else{
                 JOptionPane.showMessageDialog(null, "Hubo un error al eliminar!"); 
@@ -125,22 +125,23 @@ public static Connection getConection(){
         try {
             con = getConection();
             
-            ps = con.prepareStatement("select * from empleados where clave = ?");
-            ps.setString(1, txtBuscarID.getText());
+            ps = con.prepareStatement("select * from hospitales where id = ?");
+            ps.setInt(1, Integer.parseInt(txtBuscarID.getText()));
            
            rs = ps.executeQuery();
           
             if (rs.next() ) {
               txtNombre.setText(rs.getString("Nombre"));
-           
+              txtTelefono.setText(Integer.toString(rs.getInt("Telefono")));
               txtCalle.setText(rs.getString("Calle"));
-              txtWeb.setText(Integer.toString(rs.getInt("Cedula_profesional")));
+              txtWeb.setText(rs.getString("Sitioweb"));
               txtColonia.setText(rs.getString("Colonia"));
               txtEstado.setText(rs.getString("Estado"));
               txtExterior.setText(Integer.toString(rs.getInt("Noext")));
               txtInterior.setText(Integer.toString(rs.getInt("Noint")));
               txtMunicipio.setText(rs.getString("Municipio"));
               txtRFC.setText(rs.getString("RFC"));
+              txtEmail.setText(rs.getString("Email"));
      
          
             }else{

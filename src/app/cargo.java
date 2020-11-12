@@ -42,11 +42,11 @@ public static Connection getConection(){
     }
     
     private void limpiarCaja(){
-        txtClave.setText(null);
-        txtCalle.setText(null);
+        txtID.setText(null);
+        txtDescripcion.setText(null);
        
-        txtExterior.setText(null);
-        txtFecha.setText(null);
+        txtSueldo.setText(null);
+        txtNombreDepartamento.setText(null);
      
         txtNombre.setText(null);
         
@@ -61,17 +61,17 @@ public static Connection getConection(){
         try {
             con = getConection();
            
-            ps = con.prepareStatement("insert into empleados (clave, Nombre, ApPat, ApMat, Fecha_Nac, Calle, Noext, Noint, Colonia, Municipio, Estado, RFC, CURP, Genero, Cedula_profesional, Telefono, Email) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            ps.setString(1, txtClave.getText());
-            ps.setString(2, txtNombre.getText());
-            ps.setDate(5, Date.valueOf(txtFecha.getText()));
-            ps.setString(6, txtCalle.getText());
-            ps.setInt(7, Integer.parseInt(txtExterior.getText()));
+            ps = con.prepareStatement("insert into turnos (Nombre, NombreDepartamento, Descripcion, Sueldo) values (?, ?, ?, ?)");
+         
+            ps.setString(1, txtNombre.getText());
+            ps.setString(2, txtNombreDepartamento.getText() );
+            ps.setString(6, txtDescripcion.getText());
+            ps.setFloat(7, Float.parseFloat(txtSueldo.getText()));
          
             int res = ps.executeUpdate();
             
             if (res > 0) {
-                JOptionPane.showMessageDialog(null, "El empleado se registro con éxito!");
+                JOptionPane.showMessageDialog(null, "El turno se registro con éxito!");
                 limpiarCaja();
             }else{
                JOptionPane.showMessageDialog(null, "Hubo un error al guardar!"); 
@@ -92,11 +92,11 @@ public static Connection getConection(){
         try {
             con = getConection();
             
-            ps = con.prepareStatement("delete from empleados where clave = ?");
-            ps.setString(1, txtClave.getText());
+            ps = con.prepareStatement("delete from turnos where clave = ?");
+            ps.setInt(1, Integer.parseInt(txtID.getText()));
             int res = ps.executeUpdate();
             if (res > 0) {
-              JOptionPane.showMessageDialog(null, "Se elimino el empleado con clave: "+txtClave.getText() + " de forma exitosa!"); 
+              JOptionPane.showMessageDialog(null, "Se elimino el turno con clave: "+txtID.getText() + " de forma exitosa!"); 
               limpiarCaja();
             }else{
                 JOptionPane.showMessageDialog(null, "Hubo un error al eliminar!"); 
@@ -113,18 +113,19 @@ public static Connection getConection(){
         try {
             con = getConection();
             
-            ps = con.prepareStatement("select * from empleados where clave = ?");
-            ps.setString(1, txtClave.getText());
+            ps = con.prepareStatement("select * from turnos where clave = ?");
+            ps.setString(1, txtID.getText());
            
            rs = ps.executeQuery();
           
             if (rs.next() ) {
               txtNombre.setText(rs.getString("Nombre"));
            
-              txtCalle.setText(rs.getString("Calle"));
+              txtDescripcion.setText(rs.getString("Calle"));
              
-              txtExterior.setText(Integer.toString(rs.getInt("Noext")));
+              txtSueldo.setText(Float.toString(rs.getFloat("Sueldo")));
             
+              txtNombreDepartamento.setText(rs.getString("NombreDepartamento"));
      
          
             }else{
@@ -149,15 +150,15 @@ public static Connection getConection(){
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        txtClave = new javax.swing.JTextField();
+        txtID = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        txtFecha = new javax.swing.JTextField();
+        txtNombreDepartamento = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        txtCalle = new javax.swing.JTextField();
+        txtDescripcion = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        txtExterior = new javax.swing.JTextField();
+        txtSueldo = new javax.swing.JTextField();
         btnGuardar = new javax.swing.JButton();
         btnActualizar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
@@ -166,7 +167,7 @@ public static Connection getConection(){
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Clave:");
+        jLabel1.setText("Buscar por ID:");
 
         jLabel2.setText("Nombre:");
 
@@ -176,9 +177,9 @@ public static Connection getConection(){
 
         jLabel7.setText("sueldo:");
 
-        txtExterior.addActionListener(new java.awt.event.ActionListener() {
+        txtSueldo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtExteriorActionPerformed(evt);
+                txtSueldoActionPerformed(evt);
             }
         });
 
@@ -217,7 +218,7 @@ public static Connection getConection(){
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtClave, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -225,15 +226,15 @@ public static Connection getConection(){
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtFecha))
+                        .addComponent(txtNombreDepartamento))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtCalle))
+                        .addComponent(txtDescripcion))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtExterior)))
+                        .addComponent(txtSueldo)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -251,7 +252,7 @@ public static Connection getConection(){
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
-                            .addComponent(txtClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addComponent(btnBuscar)))
@@ -269,18 +270,18 @@ public static Connection getConection(){
                         .addGap(30, 30, 30)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNombreDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEliminar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(txtCalle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
-                            .addComponent(txtExterior, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtSueldo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(1, 1, 1)
                         .addComponent(btnLimpiar)))
@@ -290,10 +291,10 @@ public static Connection getConection(){
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtExteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtExteriorActionPerformed
+    private void txtSueldoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSueldoActionPerformed
         // TODO add your handling code here:
         
-    }//GEN-LAST:event_txtExteriorActionPerformed
+    }//GEN-LAST:event_txtSueldoActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
@@ -361,10 +362,10 @@ public static Connection getConection(){
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JTextField txtCalle;
-    private javax.swing.JTextField txtClave;
-    private javax.swing.JTextField txtExterior;
-    private javax.swing.JTextField txtFecha;
+    private javax.swing.JTextField txtDescripcion;
+    private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtNombreDepartamento;
+    private javax.swing.JTextField txtSueldo;
     // End of variables declaration//GEN-END:variables
 }
