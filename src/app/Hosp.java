@@ -18,6 +18,8 @@ public class Hosp {
         // TODO code application logic here
         //conexion con = new conexion();
         //con.conectado();
+        Login login = new Login();
+        login.setVisible(true);
     }
     
 }
