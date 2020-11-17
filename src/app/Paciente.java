@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package app;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,31 +16,17 @@ import javax.swing.JOptionPane;
  */
 public class Paciente extends javax.swing.JFrame {
     
-   public static final String URL = "jdbc:mysql://localhost:3306/hospital";
-public static final String USERNAME = "root";
-public static final String PASSWORD = "";
-
-PreparedStatement ps;
-ResultSet rs;
-
-public static Connection getConection(){
-    Connection con = null;
-    
-    try {
-        Class.forName("com.mysql.jdbc.Driver");
-        con = (Connection) DriverManager.getConnection(URL, USERNAME, PASSWORD);
-    } catch (Exception e) {
-        System.out.println(e);
-    }
-    
-    return con;
-}
+   PreparedStatement ps;
+   ResultSet rs;
+   Connection con = null;
 
     /**
      * Creates new form Empleado
      */
     public Paciente() {
         initComponents();
+                Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
     }
     
     private void limpiarCaja(){
@@ -67,7 +55,7 @@ public static Connection getConection(){
         
         
         try {
-            con = getConection();
+            con = databaseControl.DatabaseHandler.getConnection();
            //modificar
             ps = con.prepareStatement("insert into empleados (clave, Nombre, ApPat, ApMat, Fecha_Nac, Calle, Noext, Noint, Colonia, Municipio, Estado, RFC, CURP, Genero, Cedula_profesional, Telefono, Email) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, txtClave.getText());
@@ -110,7 +98,7 @@ public static Connection getConection(){
     public void eliminarDatos(){
         Connection con = null;
         try {
-            con = getConection();
+            con = databaseControl.DatabaseHandler.getConnection();
             //modi
             ps = con.prepareStatement("delete from empleados where clave = ?");
             ps.setString(1, txtClave.getText());
@@ -131,7 +119,7 @@ public static Connection getConection(){
     public void buscarDatos(){
          Connection con = null;
         try {
-            con = getConection();
+            con = databaseControl.DatabaseHandler.getConnection();
             //mod
             ps = con.prepareStatement("select * from empleados where clave = ?");
             ps.setString(1, txtClave.getText());
@@ -203,7 +191,7 @@ public static Connection getConection(){
         jLabel13 = new javax.swing.JLabel();
         txtCURP = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        cbxGenero = new javax.swing.JComboBox<>();
+        cbxGenero = new javax.swing.JComboBox<String>();
         jLabel15 = new javax.swing.JLabel();
         txtContactoEmergencia = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
@@ -217,6 +205,7 @@ public static Connection getConection(){
         btnBuscar = new javax.swing.JButton();
         jLabel18 = new javax.swing.JLabel();
         txtTelefonoEmergencia = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -254,7 +243,7 @@ public static Connection getConection(){
 
         jLabel14.setText("Género:");
 
-        cbxGenero.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona", "Masculino", "Femenico" }));
+        cbxGenero.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Selecciona", "Masculino", "Femenico" }));
 
         jLabel15.setText("Contacto de Emergencia: ");
 
@@ -288,6 +277,13 @@ public static Connection getConection(){
         btnBuscar.setText("Buscar");
 
         jLabel18.setText("Telefono de Emergencia: ");
+
+        jButton1.setText("Regresar al home");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -379,7 +375,8 @@ public static Connection getConection(){
                             .addComponent(btnActualizar)
                             .addComponent(btnEliminar)
                             .addComponent(btnLimpiar)
-                            .addComponent(btnBuscar))
+                            .addComponent(btnBuscar)
+                            .addComponent(jButton1))
                         .addGap(53, 53, 53))))
         );
         layout.setVerticalGroup(
@@ -433,18 +430,23 @@ public static Connection getConection(){
                     .addGroup(layout.createSequentialGroup()
                         .addGap(1, 1, 1)
                         .addComponent(btnLimpiar)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(txtColonia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10)
-                    .addComponent(txtMunicipio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12)
-                    .addComponent(txtRFC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(txtColonia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel10)
+                            .addComponent(txtMunicipio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel11)
+                            .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel12)
+                            .addComponent(txtRFC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(jButton1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
@@ -498,6 +500,12 @@ public static Connection getConection(){
         
     }//GEN-LAST:event_btnGuardarActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+           Home home = new Home();
+           home.setVisible(true);
+           this.setVisible(false);         // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -540,6 +548,7 @@ public static Connection getConection(){
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JComboBox<String> cbxGenero;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

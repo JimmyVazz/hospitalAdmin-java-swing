@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package app;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,31 +16,18 @@ import javax.swing.JOptionPane;
  */
 public class cargo extends javax.swing.JFrame {
     
-   public static final String URL = "jdbc:mysql://localhost:3306/hospital";
-public static final String USERNAME = "root";
-public static final String PASSWORD = "";
-
-PreparedStatement ps;
-ResultSet rs;
-
-public static Connection getConection(){
-    Connection con = null;
-    
-    try {
-        Class.forName("com.mysql.jdbc.Driver");
-        con = (Connection) DriverManager.getConnection(URL, USERNAME, PASSWORD);
-    } catch (Exception e) {
-        System.out.println(e);
-    }
-    
-    return con;
-}
+   
+  PreparedStatement ps;
+   ResultSet rs;
+   Connection con = null;
 
     /**
      * Creates new form Empleado
      */
     public cargo() {
         initComponents();
+                Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
     }
     
     private void limpiarCaja(){
@@ -59,7 +48,7 @@ public static Connection getConection(){
         
         
         try {
-            con = getConection();
+            con = databaseControl.DatabaseHandler.getConnection();
            
             ps = con.prepareStatement("insert into turnos (Nombre, NombreDepartamento, Descripcion, Sueldo) values (?, ?, ?, ?)");
          
@@ -90,7 +79,7 @@ public static Connection getConection(){
     public void eliminarDatos(){
         Connection con = null;
         try {
-            con = getConection();
+            con = databaseControl.DatabaseHandler.getConnection();
             
             ps = con.prepareStatement("delete from turnos where clave = ?");
             ps.setInt(1, Integer.parseInt(txtID.getText()));
@@ -111,7 +100,7 @@ public static Connection getConection(){
     public void buscarDatos(){
          Connection con = null;
         try {
-            con = getConection();
+           con = databaseControl.DatabaseHandler.getConnection();
             
             ps = con.prepareStatement("select * from turnos where clave = ?");
             ps.setString(1, txtID.getText());
@@ -164,6 +153,7 @@ public static Connection getConection(){
         btnEliminar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -208,11 +198,18 @@ public static Connection getConection(){
 
         btnBuscar.setText("Buscar");
 
+        jButton1.setText("Regresar al home");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
@@ -235,14 +232,18 @@ public static Connection getConection(){
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtSueldo)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(53, 53, 53))
+                .addGap(99, 99, 99))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(81, 81, 81))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -285,7 +286,9 @@ public static Connection getConection(){
                     .addGroup(layout.createSequentialGroup()
                         .addGap(1, 1, 1)
                         .addComponent(btnLimpiar)))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addContainerGap())
         );
 
         pack();
@@ -315,6 +318,12 @@ public static Connection getConection(){
         }
         
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+Home home = new Home();
+           home.setVisible(true);
+           this.setVisible(false);        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -357,6 +366,7 @@ public static Connection getConection(){
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;

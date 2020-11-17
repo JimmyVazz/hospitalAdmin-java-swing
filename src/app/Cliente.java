@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package app;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,35 +16,21 @@ import javax.swing.JOptionPane;
  */
 public class Cliente extends javax.swing.JFrame {
     
-   public static final String URL = "jdbc:mysql://localhost:3306/hospital";
-public static final String USERNAME = "root";
-public static final String PASSWORD = "";
+ PreparedStatement ps;
+   ResultSet rs;
+   Connection con = null;
 
-PreparedStatement ps;
-ResultSet rs;
-
-public static Connection getConection(){
-    Connection con = null;
-    
-    try {
-        Class.forName("com.mysql.jdbc.Driver");
-        con = (Connection) DriverManager.getConnection(URL, USERNAME, PASSWORD);
-    } catch (Exception e) {
-        System.out.println(e);
-    }
-    
-    return con;
-}
 
     /**
      * Creates new form Empleado
      */
     public Cliente() {
         initComponents();
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
     }
     
     private void limpiarCaja(){
-        txtClave.setText(null);
         txtcp.setText(null);
         txtCalle.setText(null);
         
@@ -66,25 +54,25 @@ public static Connection getConection(){
         
         
         try {
-            con = getConection();
+            con = databaseControl.DatabaseHandler.getConnection();
            //mod
-            ps = con.prepareStatement("insert into empleados (clave, Nombre, ApPat, ApMat, Fecha_Nac, Calle, Noext, Noint, Colonia, Municipio, Estado, RFC, CURP, Genero, Cedula_profesional, Telefono, Email) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            ps.setString(1, txtClave.getText());
-            ps.setString(2, txtNombre.getText());
-            ps.setString(3, txtapPat.getText());
-            ps.setString(4, txtapMaterno.getText());
-            ps.setString(5, txtrazonsocial.getText());
-            ps.setString(6, txtCalle.getText());
-            ps.setInt(7, Integer.parseInt(txtExterior.getText()));
-            ps.setInt(8, Integer.parseInt(txtInterior.getText()));
-            ps.setString(9, txtColonia.getText());
-            ps.setString(10, txtMunicipio.getText());
-            ps.setString(11, txtEstado.getText());
-            ps.setString(12, txtRFC.getText());
-            ps.setString(13, txtcp.getText());
-            ps.setString(14, cbxGenero.getSelectedItem().toString());
+            ps = con.prepareStatement("insert into clientes (Nombre, ApPaterno, ApMaterno, razonSocial, Genero, RFC, telefono, Calle, NoExt, NoInt, Colonia, Municipio, Estado, CP) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            ps.setString(1, txtNombre.getText());
+            ps.setString(2, txtapPat.getText());
+            ps.setString(3, txtapMaterno.getText());
+            ps.setString(4, txtrazonsocial.getText());
+            ps.setString(5, cbxGenero.getSelectedItem().toString());
+            ps.setInt(9, Integer.parseInt(txtExterior.getText()));
+            ps.setInt(10, Integer.parseInt(txtInterior.getText()));
+            ps.setString(8, txtCalle.getText());
+            ps.setString(12, txtMunicipio.getText());
+            ps.setString(13, txtEstado.getText());
+            ps.setString(11, txtColonia.getText());
+            ps.setString(6, txtRFC.getText());
+            ps.setString(12, txtcp.getText());
+            ps.setString(13, cbxGenero.getSelectedItem().toString());
            
-            ps.setInt(16, Integer.parseInt(txtTelefono.getText()));
+            ps.setInt(7, Integer.parseInt(txtTelefono.getText()));
             
             
             int res = ps.executeUpdate();
@@ -109,13 +97,13 @@ public static Connection getConection(){
     public void eliminarDatos(){
         Connection con = null;
         try {
-            con = getConection();
+            con = databaseControl.DatabaseHandler.getConnection();
             //modificar
-            ps = con.prepareStatement("delete from empleados where clave = ?");
-            ps.setString(1, txtClave.getText());
+            ps = con.prepareStatement("delete from clientes where RFC = ?");
+                        ps.setString(1, txtRFC.getText());
             int res = ps.executeUpdate();
             if (res > 0) {
-              JOptionPane.showMessageDialog(null, "Se elimino la cita con clave: "+txtClave.getText() + " de forma exitosa!"); 
+              JOptionPane.showMessageDialog(null, "Se elimino el cliente con RFC: "+txtRFC.getText() + " de forma exitosa!"); 
               limpiarCaja();
             }else{
                 JOptionPane.showMessageDialog(null, "Hubo un error al eliminar!"); 
@@ -130,10 +118,10 @@ public static Connection getConection(){
     public void buscarDatos(){
          Connection con = null;
         try {
-            con = getConection();
+            con = databaseControl.DatabaseHandler.getConnection();
             //modificar
-            ps = con.prepareStatement("select * from empleados where clave = ?");
-            ps.setString(1, txtClave.getText());
+            ps = con.prepareStatement("select * from clientes where RFC = ?");
+            ps.setString(1, txtRFC.getText());
            
            rs = ps.executeQuery();
           
@@ -175,8 +163,6 @@ public static Connection getConection(){
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        txtClave = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -202,7 +188,7 @@ public static Connection getConection(){
         jLabel13 = new javax.swing.JLabel();
         txtcp = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        cbxGenero = new javax.swing.JComboBox<>();
+        cbxGenero = new javax.swing.JComboBox<String>();
         jLabel16 = new javax.swing.JLabel();
         txtTelefono = new javax.swing.JTextField();
         btnGuardar = new javax.swing.JButton();
@@ -212,8 +198,7 @@ public static Connection getConection(){
         btnBuscar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel1.setText("Clave:");
+        setTitle("Clientes");
 
         jLabel2.setText("Nombre:");
 
@@ -247,7 +232,7 @@ public static Connection getConection(){
 
         jLabel14.setText("Género:");
 
-        cbxGenero.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona", "Masculino", "Femenico" }));
+        cbxGenero.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Selecciona", "Masculino", "Femenico" }));
 
         jLabel16.setText("Teléfono:");
 
@@ -290,10 +275,6 @@ public static Connection getConection(){
                         .addContainerGap(272, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtClave, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -358,15 +339,8 @@ public static Connection getConection(){
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(txtClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(btnBuscar)))
+                .addGap(21, 21, 21)
+                .addComponent(btnBuscar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
@@ -501,7 +475,6 @@ public static Connection getConection(){
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JComboBox<String> cbxGenero;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -517,7 +490,6 @@ public static Connection getConection(){
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JTextField txtCalle;
-    private javax.swing.JTextField txtClave;
     private javax.swing.JTextField txtColonia;
     private javax.swing.JTextField txtEstado;
     private javax.swing.JTextField txtExterior;

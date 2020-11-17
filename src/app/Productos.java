@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package app;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,31 +16,16 @@ import javax.swing.JOptionPane;
  */
 public class Productos extends javax.swing.JFrame {
     
-   public static final String URL = "jdbc:mysql://localhost:3306/hospital";
-public static final String USERNAME = "root";
-public static final String PASSWORD = "";
-
 PreparedStatement ps;
-ResultSet rs;
-
-public static Connection getConection(){
-    Connection con = null;
-    
-    try {
-        Class.forName("com.mysql.jdbc.Driver");
-        con = (Connection) DriverManager.getConnection(URL, USERNAME, PASSWORD);
-    } catch (Exception e) {
-        System.out.println(e);
-    }
-    
-    return con;
-}
-
+   ResultSet rs;
+   Connection con = null;
     /**
      * Creates new form Empleado
      */
     public Productos() {
         initComponents();
+                Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
     }
     
     private void limpiarCaja(){
@@ -64,7 +51,7 @@ public static Connection getConection(){
         
         
         try {
-            con = getConection();
+             con = databaseControl.DatabaseHandler.getConnection();
            //modificar
             ps = con.prepareStatement("insert into empleados (clave, Nombre, ApPat, ApMat, Fecha_Nac, Calle, Noext, Noint, Colonia, Municipio, Estado, RFC, CURP, Genero, Cedula_profesional, Telefono, Email) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, txtClave.getText());
@@ -106,7 +93,7 @@ public static Connection getConection(){
     public void eliminarDatos(){
         Connection con = null;
         try {
-            con = getConection();
+             con = databaseControl.DatabaseHandler.getConnection();
             //mod
             ps = con.prepareStatement("delete from empleados where clave = ?");
             ps.setString(1, txtClave.getText());
@@ -127,7 +114,7 @@ public static Connection getConection(){
     public void buscarDatos(){
          Connection con = null;
         try {
-            con = getConection();
+             con = databaseControl.DatabaseHandler.getConnection();
             //mod
             ps = con.prepareStatement("select * from empleados where clave = ?");
             ps.setString(1, txtClave.getText());
@@ -197,6 +184,7 @@ public static Connection getConection(){
         btnEliminar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -252,6 +240,13 @@ public static Connection getConection(){
         });
 
         btnBuscar.setText("Buscar");
+
+        jButton1.setText("Regresar al home");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -315,7 +310,8 @@ public static Connection getConection(){
                             .addComponent(btnActualizar)
                             .addComponent(btnEliminar)
                             .addComponent(btnLimpiar)
-                            .addComponent(btnBuscar))
+                            .addComponent(btnBuscar)
+                            .addComponent(jButton1))
                         .addGap(53, 53, 53))))
         );
         layout.setVerticalGroup(
@@ -378,7 +374,8 @@ public static Connection getConection(){
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
-                    .addComponent(txtFechaCaducidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtFechaCaducidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel16)
@@ -413,6 +410,12 @@ public static Connection getConection(){
         }
         
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+           Home home = new Home();
+           home.setVisible(true);
+           this.setVisible(false);         // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -455,6 +458,7 @@ public static Connection getConection(){
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;

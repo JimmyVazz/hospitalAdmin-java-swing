@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package app;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,31 +16,16 @@ import javax.swing.JOptionPane;
  */
 public class hospital extends javax.swing.JFrame {
     
-   public static final String URL = "jdbc:mysql://localhost:3306/hospital";
-public static final String USERNAME = "root";
-public static final String PASSWORD = "";
-
-PreparedStatement ps;
-ResultSet rs;
-
-public static Connection getConection(){
-    Connection con = null;
-    
-    try {
-        Class.forName("com.mysql.jdbc.Driver");
-        con = (Connection) DriverManager.getConnection(URL, USERNAME, PASSWORD);
-    } catch (Exception e) {
-        System.out.println(e);
-    }
-    
-    return con;
-}
-
+   PreparedStatement ps;
+   ResultSet rs;
+   Connection con = null;
     /**
      * Creates new form Empleado
      */
     public hospital() {
         initComponents();
+                Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
     }
     
     private void limpiarCaja(){
@@ -63,7 +50,7 @@ public static Connection getConection(){
         
         
         try {
-            con = getConection();
+            con = databaseControl.DatabaseHandler.getConnection();
            
             ps = con.prepareStatement("insert into hospitales (Nombre, Telefono, Calle, Noext, Noint, Colonia, RFC, Municipio, Estado, Email, Sitioweb) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, txtNombre.getText());
@@ -83,7 +70,7 @@ public static Connection getConection(){
             int res = ps.executeUpdate();
             
             if (res > 0) {
-                JOptionPane.showMessageDialog(null, "El hopsital se registro con éxito!");
+                JOptionPane.showMessageDialog(null, "El hospital se registro con éxito!");
                 limpiarCaja();
             }else{
                JOptionPane.showMessageDialog(null, "Hubo un error al guardar!"); 
@@ -102,13 +89,13 @@ public static Connection getConection(){
     public void eliminarDatos(){
         Connection con = null;
         try {
-            con = getConection();
+             con = databaseControl.DatabaseHandler.getConnection();
             
-            ps = con.prepareStatement("delete from empleados where id = ?");
+            ps = con.prepareStatement("delete from hospitales where id = ?");
             ps.setInt(1, Integer.parseInt(txtBuscarID.getText()));
             int res = ps.executeUpdate();
             if (res > 0) {
-              JOptionPane.showMessageDialog(null, "Se elimino el hopsital con clave: "+txtBuscarID.getText() + " de forma exitosa!"); 
+              JOptionPane.showMessageDialog(null, "Se elimino el hospital con clave: "+txtBuscarID.getText() + " de forma exitosa!"); 
               limpiarCaja();
             }else{
                 JOptionPane.showMessageDialog(null, "Hubo un error al eliminar!"); 
@@ -123,7 +110,7 @@ public static Connection getConection(){
     public void buscarDatos(){
          Connection con = null;
         try {
-            con = getConection();
+             con = databaseControl.DatabaseHandler.getConnection();
             
             ps = con.prepareStatement("select * from hospitales where id = ?");
             ps.setInt(1, Integer.parseInt(txtBuscarID.getText()));
@@ -194,6 +181,7 @@ public static Connection getConection(){
         btnEliminar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -252,6 +240,13 @@ public static Connection getConection(){
 
         btnBuscar.setText("Buscar");
 
+        jButton1.setText("Regresar al home");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -259,17 +254,6 @@ public static Connection getConection(){
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel16)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtTelefono))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel15)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtWeb, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(256, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
@@ -319,7 +303,20 @@ public static Connection getConection(){
                             .addComponent(btnEliminar)
                             .addComponent(btnLimpiar)
                             .addComponent(btnBuscar))
-                        .addGap(53, 53, 53))))
+                        .addGap(53, 53, 53))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel16)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtTelefono))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel15)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtWeb, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addGap(40, 40, 40))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -376,11 +373,17 @@ public static Connection getConection(){
                     .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12)
                     .addComponent(txtRFC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(38, 38, 38)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel15)
-                    .addComponent(txtWeb, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(38, 38, 38)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel15)
+                            .addComponent(txtWeb, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1)
+                        .addGap(18, 18, 18)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel16)
                     .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -414,6 +417,12 @@ public static Connection getConection(){
         }
         
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+           Home home = new Home();
+           home.setVisible(true);
+           this.setVisible(false);        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -456,6 +465,7 @@ public static Connection getConection(){
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package app;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,35 +16,21 @@ import javax.swing.JOptionPane;
  */
 public class Incapacidades extends javax.swing.JFrame {
     
-   public static final String URL = "jdbc:mysql://localhost:3306/hospital";
-public static final String USERNAME = "root";
-public static final String PASSWORD = "";
-
-PreparedStatement ps;
-ResultSet rs;
-
-public static Connection getConection(){
-    Connection con = null;
-    
-    try {
-        Class.forName("com.mysql.jdbc.Driver");
-        con = (Connection) DriverManager.getConnection(URL, USERNAME, PASSWORD);
-    } catch (Exception e) {
-        System.out.println(e);
-    }
-    
-    return con;
-}
+   PreparedStatement ps;
+   ResultSet rs;
+   Connection con = null;
 
     /**
      * Creates new form Empleado
      */
     public Incapacidades() {
         initComponents();
+                Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
     }
     
     private void limpiarCaja(){
-        txtClave.setText(null);
+        txtID.setText(null);
         txtFechaInicio.setText(null);
         txtMotivo.setText(null);
         txtFechaFin.setText(null);
@@ -54,13 +42,12 @@ public static Connection getConection(){
         
         
         try {
-            con = getConection();
+            con = databaseControl.DatabaseHandler.getConnection();
            //modificar
-            ps = con.prepareStatement("insert into empleados (clave, Nombre, ApPat, ApMat, Fecha_Nac, Calle, Noext, Noint, Colonia, Municipio, Estado, RFC, CURP, Genero, Cedula_profesional, Telefono, Email) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            ps.setString(1, txtClave.getText());
-            ps.setDate(2,Date.valueOf( txtFechaInicio.getText()));
-            ps.setDate(3,Date.valueOf( txtFechaFin.getText()));
-            ps.setString(4, txtMotivo.getText());
+            ps = con.prepareStatement("insert into incapacidades (FechaInicio, FechaFin, Motivo) values (?, ?, ?)");
+            ps.setDate(1,Date.valueOf( txtFechaInicio.getText()));
+            ps.setDate(2,Date.valueOf( txtFechaFin.getText()));
+            ps.setString(3, txtMotivo.getText());
           
             
             int res = ps.executeUpdate();
@@ -85,13 +72,13 @@ public static Connection getConection(){
     public void eliminarDatos(){
         Connection con = null;
         try {
-            con = getConection();
+            con = databaseControl.DatabaseHandler.getConnection();
             //mod
-            ps = con.prepareStatement("delete from empleados where clave = ?");
-            ps.setString(1, txtClave.getText());
+            ps = con.prepareStatement("delete from incapacidades where id = ?");
+            ps.setInt(1, Integer.parseInt(txtID.getText()));
             int res = ps.executeUpdate();
             if (res > 0) {
-              JOptionPane.showMessageDialog(null, "Se elimino Incapacidad con clave: "+txtClave.getText() + " de forma exitosa!"); 
+              JOptionPane.showMessageDialog(null, "Se elimino Incapacidad con id: "+txtID.getText() + " de forma exitosa!"); 
               limpiarCaja();
             }else{
                 JOptionPane.showMessageDialog(null, "Hubo un error al eliminar!"); 
@@ -106,10 +93,10 @@ public static Connection getConection(){
     public void buscarDatos(){
          Connection con = null;
         try {
-            con = getConection();
+            con = databaseControl.DatabaseHandler.getConnection();
             //mod
-            ps = con.prepareStatement("select * from empleados where clave = ?");
-            ps.setString(1, txtClave.getText());
+            ps = con.prepareStatement("select * from incapacidades where id= ?");
+            ps.setInt(1, Integer.parseInt(txtID.getText()));
            
            rs = ps.executeQuery();
           
@@ -141,7 +128,7 @@ public static Connection getConection(){
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        txtClave = new javax.swing.JTextField();
+        txtID = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txtFechaInicio = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -153,10 +140,11 @@ public static Connection getConection(){
         btnEliminar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Clave:");
+        jLabel1.setText("ID");
 
         jLabel2.setText("Fecha inicio: ");
 
@@ -189,17 +177,24 @@ public static Connection getConection(){
 
         btnBuscar.setText("Buscar");
 
+        jButton1.setText("Regresar al home");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtClave))
+                        .addComponent(txtID))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -212,13 +207,15 @@ public static Connection getConection(){
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtMotivo)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(53, 53, 53))
         );
         layout.setVerticalGroup(
@@ -229,7 +226,7 @@ public static Connection getConection(){
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
-                            .addComponent(txtClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addComponent(btnBuscar)))
@@ -255,7 +252,9 @@ public static Connection getConection(){
                         .addComponent(btnEliminar)
                         .addGap(30, 30, 30)
                         .addComponent(btnLimpiar)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         pack();
@@ -280,6 +279,12 @@ public static Connection getConection(){
         }
         
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+           Home home = new Home();
+           home.setVisible(true);
+           this.setVisible(false);         // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -322,13 +327,14 @@ public static Connection getConection(){
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JTextField txtClave;
     private javax.swing.JTextField txtFechaFin;
     private javax.swing.JTextField txtFechaInicio;
+    private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtMotivo;
     // End of variables declaration//GEN-END:variables
 }

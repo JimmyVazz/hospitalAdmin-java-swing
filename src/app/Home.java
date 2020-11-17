@@ -6,6 +6,12 @@
 
 package app;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author cjvas
@@ -17,6 +23,8 @@ public class Home extends javax.swing.JFrame {
      */
     public Home() {
         initComponents();
+                Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
     }
 
     /**
@@ -30,15 +38,210 @@ public class Home extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         txtEmpleados = new javax.swing.JButton();
+        txtDeducciones = new javax.swing.JButton();
+        txtCargos = new javax.swing.JButton();
+        txtCompras = new javax.swing.JButton();
+        txtAsistencias = new javax.swing.JButton();
+        txtIncapacidades = new javax.swing.JButton();
+        txtMateriales = new javax.swing.JButton();
+        txtOrdenPagos = new javax.swing.JButton();
+        txtEspecialidades = new javax.swing.JButton();
+        txtFacturas = new javax.swing.JButton();
+        txtFarmacias = new javax.swing.JButton();
+        txtHospitales = new javax.swing.JButton();
+        txtNotaVentas = new javax.swing.JButton();
+        txtNotaCompras = new javax.swing.JButton();
+        txtPacientes = new javax.swing.JButton();
+        txtMedicamentos = new javax.swing.JButton();
+        txtPagos = new javax.swing.JButton();
+        txtPercepciones = new javax.swing.JButton();
+        txtProductos = new javax.swing.JButton();
+        txtVacaciones = new javax.swing.JButton();
+        txtTurnos = new javax.swing.JButton();
+        txtServicios = new javax.swing.JButton();
+        txtVentas = new javax.swing.JButton();
+        txtProveedores = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Home");
+        setBackground(new java.awt.Color(0, 153, 153));
+        setForeground(java.awt.Color.white);
 
-        jLabel1.setText("Home");
+        jLabel1.setText("Bienvenido");
 
         txtEmpleados.setText("Empleados");
         txtEmpleados.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtEmpleadosActionPerformed(evt);
+            }
+        });
+
+        txtDeducciones.setText("Deducciones");
+        txtDeducciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDeduccionesActionPerformed(evt);
+            }
+        });
+
+        txtCargos.setText("Cargos");
+        txtCargos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCargosActionPerformed(evt);
+            }
+        });
+
+        txtCompras.setText("Compras");
+        txtCompras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtComprasActionPerformed(evt);
+            }
+        });
+
+        txtAsistencias.setText("Asistencias");
+        txtAsistencias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtAsistenciasActionPerformed(evt);
+            }
+        });
+
+        txtIncapacidades.setText("Incapacidades");
+        txtIncapacidades.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtIncapacidadesActionPerformed(evt);
+            }
+        });
+
+        txtMateriales.setText("Materiales");
+        txtMateriales.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMaterialesActionPerformed(evt);
+            }
+        });
+
+        txtOrdenPagos.setText("Orden Pagos");
+        txtOrdenPagos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtOrdenPagosActionPerformed(evt);
+            }
+        });
+
+        txtEspecialidades.setText("Especialidades");
+        txtEspecialidades.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtEspecialidadesActionPerformed(evt);
+            }
+        });
+
+        txtFacturas.setText("Facturas");
+        txtFacturas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFacturasActionPerformed(evt);
+            }
+        });
+
+        txtFarmacias.setText("Farmacias");
+        txtFarmacias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFarmaciasActionPerformed(evt);
+            }
+        });
+
+        txtHospitales.setText("Hospitales");
+        txtHospitales.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtHospitalesActionPerformed(evt);
+            }
+        });
+
+        txtNotaVentas.setText("Nota Ventas");
+        txtNotaVentas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNotaVentasActionPerformed(evt);
+            }
+        });
+
+        txtNotaCompras.setText("Nota Compras");
+        txtNotaCompras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNotaComprasActionPerformed(evt);
+            }
+        });
+
+        txtPacientes.setText("Pacientes");
+        txtPacientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPacientesActionPerformed(evt);
+            }
+        });
+
+        txtMedicamentos.setText("Medicamentos");
+        txtMedicamentos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMedicamentosActionPerformed(evt);
+            }
+        });
+
+        txtPagos.setText("Pagos");
+        txtPagos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPagosActionPerformed(evt);
+            }
+        });
+
+        txtPercepciones.setText("Percepciones");
+        txtPercepciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPercepcionesActionPerformed(evt);
+            }
+        });
+
+        txtProductos.setText("Productos");
+        txtProductos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtProductosActionPerformed(evt);
+            }
+        });
+
+        txtVacaciones.setText("Vacaciones");
+        txtVacaciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtVacacionesActionPerformed(evt);
+            }
+        });
+
+        txtTurnos.setText("Turnos");
+        txtTurnos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTurnosActionPerformed(evt);
+            }
+        });
+
+        txtServicios.setText("Servicios");
+        txtServicios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtServiciosActionPerformed(evt);
+            }
+        });
+
+        txtVentas.setText("Ventas");
+        txtVentas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtVentasActionPerformed(evt);
+            }
+        });
+
+        txtProveedores.setText("Proveedores");
+        txtProveedores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtProveedoresActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Cerrar sesión");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -49,31 +252,284 @@ public class Home extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(331, 331, 331)
-                        .addComponent(jLabel1))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGap(44, 44, 44)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(txtEmpleados)
+                                                .addComponent(txtCargos)
+                                                .addComponent(txtCompras)
+                                                .addComponent(txtAsistencias)))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(txtDeducciones)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(36, 36, 36)
+                                        .addComponent(txtEspecialidades)))
+                                .addGap(47, 47, 47)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtFarmacias)
+                                    .addComponent(txtHospitales)
+                                    .addComponent(txtIncapacidades)
+                                    .addComponent(txtFacturas)
+                                    .addComponent(txtMedicamentos)
+                                    .addComponent(txtMateriales)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(341, 341, 341)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtNotaVentas)
+                                    .addComponent(txtNotaCompras)
+                                    .addComponent(txtOrdenPagos)
+                                    .addComponent(txtPacientes)
+                                    .addComponent(txtPagos)
+                                    .addComponent(txtPercepciones))))
+                        .addGap(39, 39, 39)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtProductos)
+                            .addComponent(txtVentas)
+                            .addComponent(txtVacaciones)
+                            .addComponent(txtTurnos)
+                            .addComponent(txtServicios)
+                            .addComponent(txtProveedores)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(112, 112, 112)
-                        .addComponent(txtEmpleados)))
-                .addContainerGap(560, Short.MAX_VALUE))
+                        .addGap(270, 270, 270)
+                        .addComponent(jLabel1)))
+                .addContainerGap(47, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(36, 36, 36))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(52, 52, 52)
+                .addGap(36, 36, 36)
                 .addComponent(jLabel1)
-                .addGap(116, 116, 116)
-                .addComponent(txtEmpleados)
-                .addContainerGap(242, Short.MAX_VALUE))
+                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtEmpleados)
+                    .addComponent(txtFacturas)
+                    .addComponent(txtNotaCompras)
+                    .addComponent(txtProductos))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtFarmacias)
+                    .addComponent(txtAsistencias)
+                    .addComponent(txtNotaVentas)
+                    .addComponent(txtProveedores))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtCargos)
+                    .addComponent(txtHospitales)
+                    .addComponent(txtOrdenPagos)
+                    .addComponent(txtServicios))
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtCompras)
+                    .addComponent(txtIncapacidades)
+                    .addComponent(txtPacientes)
+                    .addComponent(txtTurnos))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtMateriales)
+                    .addComponent(txtDeducciones)
+                    .addComponent(txtPagos)
+                    .addComponent(txtVacaciones))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtEspecialidades)
+                    .addComponent(txtMedicamentos)
+                    .addComponent(txtPercepciones)
+                    .addComponent(txtVentas))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmpleadosActionPerformed
-        TablaEmpleados empleado = new TablaEmpleados();        // TODO add your handling code here:
+        TablaEmpleados empleado = null;        
+        try {
+            empleado = new TablaEmpleados(); // TODO add your handling code here:
+        } catch (SQLException ex) {
+            Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+        }
         empleado.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_txtEmpleadosActionPerformed
+
+    private void txtDeduccionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDeduccionesActionPerformed
+        // TODO add your handling code here:
+        Deducciones deduccion = new Deducciones();
+        deduccion.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_txtDeduccionesActionPerformed
+
+    private void txtCargosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCargosActionPerformed
+        // TODO add your handling code here:
+        cargo cargo = new cargo();
+        cargo.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_txtCargosActionPerformed
+
+    private void txtComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtComprasActionPerformed
+        // TODO add your handling code here:
+        Compra compra = new Compra();
+        compra.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_txtComprasActionPerformed
+
+    private void txtAsistenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAsistenciasActionPerformed
+        // TODO add your handling code here:
+        Asistencia asis = new Asistencia();
+        asis.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_txtAsistenciasActionPerformed
+
+    private void txtIncapacidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIncapacidadesActionPerformed
+        // TODO add your handling code here:
+        Incapacidades inca = new Incapacidades();
+        inca.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_txtIncapacidadesActionPerformed
+
+    private void txtMaterialesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaterialesActionPerformed
+        // TODO add your handling code here:
+        Material mat = new Material();
+        mat.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_txtMaterialesActionPerformed
+
+    private void txtOrdenPagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOrdenPagosActionPerformed
+        // TODO add your handling code here:
+        OrdenDePago pago = new OrdenDePago();
+        pago.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_txtOrdenPagosActionPerformed
+
+    private void txtEspecialidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEspecialidadesActionPerformed
+        // TODO add your handling code here:
+        Especialidad esp = new Especialidad();
+        esp.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_txtEspecialidadesActionPerformed
+
+    private void txtFacturasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFacturasActionPerformed
+        // TODO add your handling code here:
+        Factura fact = new Factura();
+        fact.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_txtFacturasActionPerformed
+
+    private void txtFarmaciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFarmaciasActionPerformed
+        // TODO add your handling code here:
+        Farmacia far = new Farmacia();
+        far.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_txtFarmaciasActionPerformed
+
+    private void txtHospitalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHospitalesActionPerformed
+        // TODO add your handling code here:
+        hospital h = new hospital();
+        h.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_txtHospitalesActionPerformed
+
+    private void txtNotaVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNotaVentasActionPerformed
+        // TODO add your handling code here:
+        NotaVenta v = new NotaVenta();
+        v.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_txtNotaVentasActionPerformed
+
+    private void txtNotaComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNotaComprasActionPerformed
+        // TODO add your handling code here:
+        NotaCompra n = new NotaCompra();
+        n.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_txtNotaComprasActionPerformed
+
+    private void txtPacientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPacientesActionPerformed
+        // TODO add your handling code here:
+        Paciente p = new Paciente();
+        p.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_txtPacientesActionPerformed
+
+    private void txtMedicamentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMedicamentosActionPerformed
+        // TODO add your handling code here:
+        Medicamentos m = new Medicamentos();
+        m.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_txtMedicamentosActionPerformed
+
+    private void txtPagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPagosActionPerformed
+        // TODO add your handling code here:
+        Pago p = new Pago();
+        p.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_txtPagosActionPerformed
+
+    private void txtPercepcionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPercepcionesActionPerformed
+        // TODO add your handling code here:
+        Percepciones pe = new Percepciones();
+        pe.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_txtPercepcionesActionPerformed
+
+    private void txtProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtProductosActionPerformed
+        // TODO add your handling code here:
+        Productos pr = new Productos();
+        pr.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_txtProductosActionPerformed
+
+    private void txtVacacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtVacacionesActionPerformed
+        // TODO add your handling code here:
+        Vacaciones v = new Vacaciones();
+        v.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_txtVacacionesActionPerformed
+
+    private void txtTurnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTurnosActionPerformed
+        // TODO add your handling code here:
+        Turno t = new Turno();
+        t.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_txtTurnosActionPerformed
+
+    private void txtServiciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtServiciosActionPerformed
+        // TODO add your handling code here:
+        Servicios s = new Servicios();
+        s.setVisible(true);
+        this.setVisible(false);
+     
+    }//GEN-LAST:event_txtServiciosActionPerformed
+
+    private void txtVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtVentasActionPerformed
+        // TODO add your handling code here:
+        Venta v = new Venta();
+        v.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_txtVentasActionPerformed
+
+    private void txtProveedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtProveedoresActionPerformed
+        // TODO add your handling code here:
+        Proveedor pro = new Proveedor();
+        pro.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_txtProveedoresActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+           Login home = new Login();
+           home.setVisible(true);
+           this.setVisible(false);         // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -111,7 +567,31 @@ public class Home extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton txtAsistencias;
+    private javax.swing.JButton txtCargos;
+    private javax.swing.JButton txtCompras;
+    private javax.swing.JButton txtDeducciones;
     private javax.swing.JButton txtEmpleados;
+    private javax.swing.JButton txtEspecialidades;
+    private javax.swing.JButton txtFacturas;
+    private javax.swing.JButton txtFarmacias;
+    private javax.swing.JButton txtHospitales;
+    private javax.swing.JButton txtIncapacidades;
+    private javax.swing.JButton txtMateriales;
+    private javax.swing.JButton txtMedicamentos;
+    private javax.swing.JButton txtNotaCompras;
+    private javax.swing.JButton txtNotaVentas;
+    private javax.swing.JButton txtOrdenPagos;
+    private javax.swing.JButton txtPacientes;
+    private javax.swing.JButton txtPagos;
+    private javax.swing.JButton txtPercepciones;
+    private javax.swing.JButton txtProductos;
+    private javax.swing.JButton txtProveedores;
+    private javax.swing.JButton txtServicios;
+    private javax.swing.JButton txtTurnos;
+    private javax.swing.JButton txtVacaciones;
+    private javax.swing.JButton txtVentas;
     // End of variables declaration//GEN-END:variables
 }
