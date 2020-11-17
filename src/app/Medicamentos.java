@@ -54,7 +54,7 @@ public class Medicamentos extends javax.swing.JFrame {
         try {
             con = databaseControl.DatabaseHandler.getConnection();
            
-            ps = con.prepareStatement("insert into empleados (clave, Nombre, ApPat, ApMat, Fecha_Nac, Calle, Noext, Noint, Colonia, Municipio, Estado, RFC, CURP, Genero, Cedula_profesional, Telefono, Email) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            ps = con.prepareStatement("insert into medicamentos (clave, Nombre, ApPat, ApMat, Fecha_Nac, Calle, Noext, Noint, Colonia, Municipio, Estado, RFC, CURP, Genero, Cedula_profesional, Telefono, Email) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, txtClave.getText());
             ps.setString(2, txtNombre.getText());
             ps.setString(3, txtFormula.getText());
@@ -93,7 +93,7 @@ public class Medicamentos extends javax.swing.JFrame {
         try {
            con = databaseControl.DatabaseHandler.getConnection();
             //mod
-            ps = con.prepareStatement("delete from empleados where clave = ?");
+            ps = con.prepareStatement("delete from medicamentos where clave = ?");
             ps.setString(1, txtClave.getText());
             int res = ps.executeUpdate();
             if (res > 0) {
@@ -114,7 +114,7 @@ public class Medicamentos extends javax.swing.JFrame {
         try {
            con = databaseControl.DatabaseHandler.getConnection();
             //mod
-            ps = con.prepareStatement("select * from empleados where clave = ?");
+            ps = con.prepareStatement("select * from medicamentos where clave = ?");
             ps.setString(1, txtClave.getText());
            
            rs = ps.executeQuery();

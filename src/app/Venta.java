@@ -44,7 +44,7 @@ public class Venta extends javax.swing.JFrame {
         
         try {
            con = databaseControl.DatabaseHandler.getConnection();
-            ps = con.prepareStatement("insert into empleados (clave, Nombre, ApPat, ApMat, Fecha_Nac, Calle, Noext, Noint, Colonia, Municipio, Estado, RFC, CURP, Genero, Cedula_profesional, Telefono, Email) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            ps = con.prepareStatement("insert into ventas (clave, Nombre, ApPat, ApMat, Fecha_Nac, Calle, Noext, Noint, Colonia, Municipio, Estado, RFC, CURP, Genero, Cedula_profesional, Telefono, Email) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, txtClave.getText());
             ps.setString(2, txtNombre.getText());
            
@@ -56,7 +56,7 @@ public class Venta extends javax.swing.JFrame {
             int res = ps.executeUpdate();
             
             if (res > 0) {
-                JOptionPane.showMessageDialog(null, "El empleado se registro con éxito!");
+                JOptionPane.showMessageDialog(null, "la venta se registro con éxito!");
                 limpiarCaja();
             }else{
                JOptionPane.showMessageDialog(null, "Hubo un error al guardar!"); 
@@ -77,7 +77,7 @@ public class Venta extends javax.swing.JFrame {
         try {
            con = databaseControl.DatabaseHandler.getConnection();
             
-            ps = con.prepareStatement("delete from empleados where clave = ?");
+            ps = con.prepareStatement("delete from ventas where clave = ?");
             ps.setString(1, txtClave.getText());
             int res = ps.executeUpdate();
             if (res > 0) {
@@ -98,7 +98,7 @@ public class Venta extends javax.swing.JFrame {
         try {
             con = databaseControl.DatabaseHandler.getConnection();
             
-            ps = con.prepareStatement("select * from empleados where clave = ?");
+            ps = con.prepareStatement("select * from ventas where clave = ?");
             ps.setString(1, txtClave.getText());
            
            rs = ps.executeQuery();

@@ -48,7 +48,7 @@ PreparedStatement ps;
         try {
            con = databaseControl.DatabaseHandler.getConnection();
            //modificar
-            ps = con.prepareStatement("insert into empleados (clave, Nombre, ApPat, ApMat, Fecha_Nac, Calle, Noext, Noint, Colonia, Municipio, Estado, RFC, CURP, Genero, Cedula_profesional, Telefono, Email) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            ps = con.prepareStatement("insert into facturas (clave, Nombre, ApPat, ApMat, Fecha_Nac, Calle, Noext, Noint, Colonia, Municipio, Estado, RFC, CURP, Genero, Cedula_profesional, Telefono, Email) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, txtClave.getText());
             ps.setString(2, txtIdCliente.getText());
             ps.setString(3, txtIdVenta.getText());
@@ -80,7 +80,7 @@ PreparedStatement ps;
         try {
             con = databaseControl.DatabaseHandler.getConnection();
             //modificar
-            ps = con.prepareStatement("delete from empleados where clave = ?");
+            ps = con.prepareStatement("delete from facturas where clave = ?");
             ps.setString(1, txtClave.getText());
             int res = ps.executeUpdate();
             if (res > 0) {
@@ -101,7 +101,7 @@ PreparedStatement ps;
         try {
           con = databaseControl.DatabaseHandler.getConnection();
             //modificar
-            ps = con.prepareStatement("select * from empleados where clave = ?");
+            ps = con.prepareStatement("select * from facturas where clave = ?");
             ps.setString(1, txtClave.getText());
            
            rs = ps.executeQuery();

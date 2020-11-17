@@ -50,7 +50,7 @@ public class cargo extends javax.swing.JFrame {
         try {
             con = databaseControl.DatabaseHandler.getConnection();
            
-            ps = con.prepareStatement("insert into turnos (Nombre, NombreDepartamento, Descripcion, Sueldo) values (?, ?, ?, ?)");
+            ps = con.prepareStatement("insert into cargos (Nombre, NombreDepartamento, Descripcion, Sueldo) values (?, ?, ?, ?)");
          
             ps.setString(1, txtNombre.getText());
             ps.setString(2, txtNombreDepartamento.getText() );
@@ -81,7 +81,7 @@ public class cargo extends javax.swing.JFrame {
         try {
             con = databaseControl.DatabaseHandler.getConnection();
             
-            ps = con.prepareStatement("delete from turnos where clave = ?");
+            ps = con.prepareStatement("delete from cargos where clave = ?");
             ps.setInt(1, Integer.parseInt(txtID.getText()));
             int res = ps.executeUpdate();
             if (res > 0) {
@@ -102,7 +102,7 @@ public class cargo extends javax.swing.JFrame {
         try {
            con = databaseControl.DatabaseHandler.getConnection();
             
-            ps = con.prepareStatement("select * from turnos where clave = ?");
+            ps = con.prepareStatement("select * from cargos where clave = ?");
             ps.setString(1, txtID.getText());
            
            rs = ps.executeQuery();

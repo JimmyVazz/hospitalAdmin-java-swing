@@ -51,7 +51,7 @@ public class CuentaCita extends javax.swing.JFrame {
         try {
            con = databaseControl.DatabaseHandler.getConnection();
            //modificar
-            ps = con.prepareStatement("insert into empleados (clave, Nombre, ApPat, ApMat, Fecha_Nac, Calle, Noext, Noint, Colonia, Municipio, Estado, RFC, CURP, Genero, Cedula_profesional, Telefono, Email) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            ps = con.prepareStatement("insert into CuentaCita (clave, Nombre, ApPat, ApMat, Fecha_Nac, Calle, Noext, Noint, Colonia, Municipio, Estado, RFC, CURP, Genero, Cedula_profesional, Telefono, Email) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, txtClave.getText());
             ps.setString(2, txtidcita.getText());
             ps.setString(3, txtidmedi.getText());
@@ -86,7 +86,7 @@ public class CuentaCita extends javax.swing.JFrame {
                        con = databaseControl.DatabaseHandler.getConnection();
 
             //modificar
-            ps = con.prepareStatement("delete from empleados where clave = ?");
+            ps = con.prepareStatement("delete from CuentaCita where clave = ?");
             ps.setString(1, txtClave.getText());
             int res = ps.executeUpdate();
             if (res > 0) {
@@ -108,7 +108,7 @@ public class CuentaCita extends javax.swing.JFrame {
                       con = databaseControl.DatabaseHandler.getConnection();
 
             //modificar
-            ps = con.prepareStatement("select * from empleados where clave = ?");
+            ps = con.prepareStatement("select * from CuentaCita where clave = ?");
             ps.setString(1, txtClave.getText());
            
            rs = ps.executeQuery();
